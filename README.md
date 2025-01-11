@@ -27,7 +27,7 @@ Similarly, there are multiple alternatives for isolinux, given the limited palet
 
 ## SVG files used for development
 
-These contain additional elments not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file.
+These contain additional elements not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file.
 
 wallpaper/wallpaper_detailed_1920x1200.svg: Same visible image as wallpaper_1920x1200.svg. This is an Inkscape svg file and includes (1) viewfinders for testing the cropped composition, (2) full palettes for the image, and (3) other composition checks. These are useful for making the design but are not necessary for the final image.
 
@@ -57,5 +57,6 @@ Converting bmp to rle using netpbm:
 
 First gimp -> indexed color with 15 colors
 
-```bmptoppm isolinux.bmp > boot.ppm
-pnmtorle boot.ppm -outfile=boot.rle```
+```bmptoppm isolinux.bmp > boot.ppm```
+
+```pnmtorle boot.ppm -outfile=boot.rle```
