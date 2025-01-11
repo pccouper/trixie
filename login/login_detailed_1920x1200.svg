@@ -26,15 +26,15 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.50107815"
-     inkscape:cx="869.12591"
-     inkscape:cy="665.56485"
+     inkscape:zoom="0.52479398"
+     inkscape:cx="799.3613"
+     inkscape:cy="669.78665"
      inkscape:window-width="1920"
      inkscape:window-height="997"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg5" />
+     inkscape:current-layer="layer9" />
   <defs
      id="defs2">
     <linearGradient
@@ -246,18 +246,18 @@
        xlink:href="#linearGradient8641"
        id="linearGradient8799"
        gradientUnits="userSpaceOnUse"
-       x1="213.66042"
-       y1="481.37656"
+       x1="224.01408"
+       y1="478.49167"
        x2="213.90868"
        y2="565.7276" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient8808"
        id="linearGradient8810"
-       x1="1846.6802"
-       y1="615.53925"
-       x2="1876.3848"
-       y2="737.61523"
+       x1="1823.3279"
+       y1="616.0296"
+       x2="1849.153"
+       y2="702.69672"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
@@ -309,10 +309,10 @@
        xlink:href="#linearGradient10183"
        id="linearGradient12007"
        gradientUnits="userSpaceOnUse"
-       x1="242.05421"
-       y1="844.31311"
-       x2="226.59605"
-       y2="963.09686" />
+       x1="253.21112"
+       y1="907.75659"
+       x2="192.57124"
+       y2="1011.1102" />
     <radialGradient
        inkscape:collect="always"
        xlink:href="#linearGradient1125"
