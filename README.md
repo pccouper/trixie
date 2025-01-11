@@ -18,7 +18,7 @@ Images for debian trixie
 * Syslinux: bootscreen/isolinux_syslinux/syslinux_16bit.png
 * Plymouth: bootscreen/plymouth.svg and bootscreen/plymouth2.svg
 
-Note that the two plymouth files are alteratives. Each has four elements of the design: a background, a frill, a highlight, and the debian swirl. Everything except the highlight is intended to be static. The highlight should have varying opacity.
+Note that the two plymouth files are alteratives. Each has five elements of the design: a background, a frill, a highlight, password swatches, and the debian swirl. Everything except the highlight is intended to be static. The highlight should have varying opacity.
 
 Similarly, there are multiple alternatives for isolinux, given the limited palette -- two based on the same design as syslinux and one that is built from the start for 4bit.
 
