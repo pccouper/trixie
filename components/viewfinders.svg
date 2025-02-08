@@ -24,9 +24,9 @@
      inkscape:deskcolor="#505050"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="0.34939095"
-     inkscape:cx="831.44684"
-     inkscape:cy="585.30423"
+     inkscape:zoom="0.27926859"
+     inkscape:cx="1061.7019"
+     inkscape:cy="646.3312"
      inkscape:window-width="1686"
      inkscape:window-height="997"
      inkscape:window-x="234"
@@ -42,26 +42,30 @@
      style="display:inline">
     <path
        id="rect1993"
-       style="display:inline;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
+       style="display:none;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
        d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 0,60 H 1920 V 1140 H 0 Z" />
     <path
        id="rect1995"
-       style="display:inline;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
+       style="display:none;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
        d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 160,0 H 1760 V 1200 H 160 Z" />
     <path
        id="rect1997"
-       style="display:inline;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
+       style="display:none;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
        d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 320,88 H 1600 V 1112 H 320 Z"
        sodipodi:insensitive="true" />
     <path
        id="rect1999"
-       style="display:inline;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
+       style="display:none;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
        d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 0,0 H 1920 V 1200 H 0 Z"
        sodipodi:insensitive="true" />
     <path
        id="path796"
+       style="display:none;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
+       d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 210,0 H 1710 V 1200 H 210 Z" />
+    <path
+       id="rect1955"
        style="display:inline;fill:#3b3b49;fill-opacity:1;fill-rule:evenodd"
-       d="M -454.04297 -430.60938 L -454.04297 1630.6094 L 2374.043 1630.6094 L 2374.043 -430.60938 L -454.04297 -430.60938 z M 210 0 L 1710 0 L 1710 1200 L 210 1200 L 210 0 z " />
+       d="M -454.04297,-430.60938 V 1630.6094 H 2374.043 V -430.60938 Z M 0,188.57227 H 1920 V 1011.4277 H 0 Z" />
   </g>
   <g
      inkscape:groupmode="layer"
