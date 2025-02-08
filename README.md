@@ -2,9 +2,10 @@ Images for debian trixie
 
 ## Key files
 
-**Wallpaper**: wallpaper/wallpaper_1920x1200.svg
-* Plain svg file, no unused elements
+**Wallpaper**: wallpaper/wallpaper_1920x1200.svg and wallpaper/wallpaper_small_logo_1920x1200.svg
+* Plain svg file, no unused elements, two different logo sizes
 * This composition is designed to work when *cropped* to any dimensions specified in the requirements. There are visible tangents (solvable if necessary) on the 1280x1024 if it is *scaled and then cropped*.
+* *For the additional 21x9 format:* This was added after the initial design was completed. The "small logo" variant is a step in that direction. While there are no problematic tangents, the composition does not work as well with that width. If we expect a lot of users with that format, I'll tweak the design to accommodate it. 
 * Note that lxqt will have a hard-edged appearance compared to the other DEs tested (gnome, xfce, kde). Hypothesized root cause: I believe that this is due to the fact that qt versions prior to 6.7 used basic tiny svg, which does not include the blur effect used in the final composition. 6.7+ implemented select effects that are available in svg but not tiny svg (e.g. blur), so it will have the softer edges in trixie's version of KDE but not lxqt or bookworm's KDE. I have't really dug in, though.
 
 
@@ -17,8 +18,11 @@ Images for debian trixie
 * Isolinux: bootscreen/isolinux_syslinux/isolinux*.rle
 * Syslinux: bootscreen/isolinux_syslinux/syslinux_16bit.png
 * Plymouth: bootscreen/plymouth.svg and bootscreen/plymouth2.svg
+* Plymouth with script: bootscreen/plymouth/emerald/*
 
 Note that the two plymouth files are alteratives. Each has five elements of the design: a background, a frill, a highlight, password swatches, and the debian swirl. Everything except the highlight is intended to be static. The highlight should have varying opacity.
+
+The "emerald" folder uses the existing Emerald plymouth script and folder structure, badly patched over for ceratopsian v2 plymouth layout. I made minor changes to the Emerald script for alignment and sizing of the assets. The existing Emerald script and the final versions were added in separate commits if you want to see the diff.
 
 Similarly, there are multiple alternatives for isolinux, given the limited palette -- two based on the same design as syslinux and one that is built from the start for 4bit.
 
