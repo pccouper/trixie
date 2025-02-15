@@ -27,14 +27,11 @@
 
 
 #------------------------------- Constants -----------------------------------------
-NB_ANIM_STEPS = 60;
-NB_REFRESHS_BETWEEN_ANIMS = 2;
+NB_ANIM_STEPS = 360;
+NB_REFRESHS_BETWEEN_ANIMS = 1;
+# frill layout = 1 for large frills; = 0 for small frills
+FRILL_LAYOUT = 0;
 
-# Initial position of the center of the logo in % of background
-LOGO_CENTER_PCT.x = 0.5; # Debian swirl image position in % of screen height & width
-LOGO_CENTER_PCT.y = 0.55;
-LOGO_SIZE_PCT = 0.48; # Debian + emerald image size in % of smallest screen dimension
-LOGO_GLOW_SIZE_PCT = 0.8; # Debian swirl image size in % of smallest screen dimension
 
 #------------------------------- Globals -------------------------------------------
 # are we currently prompting for a password?
@@ -115,7 +112,9 @@ fun TextYOffset() {
 
     # Put the 1st line below the logo + some spacing
     # TODO position from lower edge
-    y = logo_sprite.GetY() + logo.GetHeight();
+    #y = logo_sprite.GetY() + logo.GetHeight();
+    # Put the first line at the midpoint
+    y = 0.5*Window.GetHeight();
     #Debug("y = " + y);
 
     text_height = first_line_height * 7.5;
@@ -139,39 +138,105 @@ small_dimension = Math.Min(window_max.width, window_max.height);
 #Debug("Window.GetX():" + Window.GetX() + ", Window.GetY():" + Window.GetY());
 #Debug("Window is [" + window_max.width + ";" + window_max.height + "], ratio=" + screen_ratio);
 
-logo_size = small_dimension * LOGO_SIZE_PCT;
-logo_center.x = window_max.width * LOGO_CENTER_PCT.x;
-logo_center.y = window_max.height * LOGO_CENTER_PCT.y;
-#Debug("Logo center at [" + logo_center.x + ";" + logo_center.y + "], size=" + logo_size + "px");
-
-logo_pos.x = logo_center.x - 0.343 * logo_size; # Center the Debian 12 text, not the image
-logo_pos.y = logo_center.y - logo_size/2;
-
-logo_glow_size = small_dimension * LOGO_GLOW_SIZE_PCT;
 
 
-#---------------------------- Logo + Emerald ---------------------------------
-logo = Image("logo+emerald.png");
-logo_scale_factor = logo_size / logo.GetWidth();
-logo = logo.Scale(logo.GetWidth()  * logo_scale_factor,
-                  logo.GetHeight() * logo_scale_factor);
-logo_to_top_edge = Window.GetHeight() * 0.3;
+#---------------------------- Frills ---------------------------------
+
+fun calcfmt(frill_layout,logo_base) {
+    x0 = Window.GetWidth();
+    y0 = Window.GetHeight();
+    
+    xlogo = logo_base.GetWidth();
+    ylogo = logo_base.GetHeight();
+    logoscale = 0.1;
+    if (xlogo<logoscale*x0) {
+        dim.logo.xsize = xlogo;
+        dim.logo.ysize = ylogo;
+    }
+    else {
+        dim.logo.xsize = logoscale*x0;
+        dim.logo.ysize = (logoscale*x0/xlogo)*ylogo;
+    }
+    dim.logo.x = 0.01*x0;
+    #dim.logo.y = 0.01*y0;
+    dim.logo.y = 0.99*y0 - dim.logo.ysize;
+    
+    if (frill_layout == 1) {
+        if (x0>=y0) {
+            dim.frill1.size = 2.5*y0;
+            dim.frill1.x = x0-1.25*y0;
+            dim.frill1.y = 0.2*y0;
+            dim.frill2.size = 1.3*y0;
+            dim.frill2.x = x0 - 1.75*y0;
+            dim.frill2.y = 0.7*y0;
+            dim.frill3.size = y0;
+            dim.frill3.x = x0-0.5*y0;
+            dim.frill3.y = -0.5*y0;
+
+            }
+        else {
+            dim.frill1.size = 2.5*x0;
+            dim.frill1.x = 0.2*x0;
+            dim.frill1.y = y0-1.25*x0;
+            dim.frill2.size = 1.3*x0;
+            dim.frill2.y = y0 - 1.75*x0;
+            dim.frill2.x = 0.7*x0;
+            dim.frill3.size = x0;
+            dim.frill3.y = y0-0.5*x0;
+            dim.frill3.x = -0.5*x0;
+        }
+    }
+    else {
+        if (x0>=y0) {
+            dim.frill1.size = y0;
+            dim.frill1.x = x0-0.5*y0;
+            dim.frill1.y = 0.5*y0;
+            dim.frill2.size = 0.5*y0;
+            dim.frill2.x = x0-0.75*y0;
+            dim.frill2.y = 0.75*y0;
+            dim.frill3.size = 0.5*y0;
+            dim.frill3.x = x0-0.25*y0;
+            dim.frill3.y = 0.25*y0;
+            }
+        else {
+            dim.frill1.size = x0;
+            dim.frill1.x = 0.5*x0;
+            dim.frill1.y = y0-0.5*x0;
+            dim.frill2.size = 0.5*x0;
+            dim.frill2.x = 0.25*x0;
+            dim.frill2.y = y0-0.25*x0;
+            dim.frill3.size = 0.5*x0;
+            dim.frill3.x = 0.75*x0;
+            dim.frill3.y = y0-0.75*x0;
+        }
+    }
+    return dim;
+}
+
+
+logo = Image("logo.png");
+
+frilldim = calcfmt(FRILL_LAYOUT,logo);
+
+frill1 = Image("frill1.png");
+frill1 = frill1.Scale(frilldim.frill1.size, frilldim.frill1.size);
+frill1_sprite = Sprite(frill1);
+frill1_sprite.SetPosition(frilldim.frill1.x,frilldim.frill1.y,-1);
+frill1_sprite.SetOpacity(0.95);
+
+frill2 = Image("frill2.png");
+frill2 = frill2.Scale(frilldim.frill2.size, frilldim.frill2.size);
+frill2_sprite = Sprite(frill2);
+frill2_sprite.SetPosition(frilldim.frill2.x,frilldim.frill2.y,-2);
+
+frill3 = Image("frill3.png");
+frill3 = frill3.Scale(frilldim.frill3.size, frilldim.frill3.size);
+frill3_sprite = Sprite(frill3);
+frill3_sprite.SetPosition(frilldim.frill3.x,frilldim.frill3.y,-3);
+
+logo = logo.Scale(frilldim.logo.xsize,frilldim.logo.ysize);
 logo_sprite = Sprite(logo);
-logo_sprite.SetPosition(logo_pos.x, logo_pos.y, -1);
-#logo_sprite.SetOpacity(0);
-
-logo_glow = Image("glow.png");
-logo_glow_scale_factor = logo_glow_size / logo_glow.GetWidth();
-logo_glow = logo_glow.Scale(logo_glow.GetWidth()  * logo_glow_scale_factor,
-                               logo_glow.GetHeight() * logo_glow_scale_factor);
-
-logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2;
-# Place glow vertically between the Debian 12 text and the emerald
-logo_glow_pos.y = logo_pos.y + logo.GetHeight()*0.1 - logo_glow.GetHeight() / 2;
-
-logo_glow_sprite = Sprite();
-logo_glow_sprite.SetPosition(logo_glow_pos.x, logo_glow_pos.y, -2);
-logo_glow_sprite.SetImage(logo_glow);
+logo_sprite.SetPosition(frilldim.logo.x,frilldim.logo.y,-4);
 
 
 #------------------------------String functions-------------------------------
@@ -232,13 +297,13 @@ fun StringToInteger (str) {
 }
 
 #-----------------------------------------------------------------------------
-# Top background colour
-# #05475c --> 0.0196, 0.2784, 0.3608
+# Top background colour -> RGB/256
+# #263a47 --> 0.1484, 0.2266, 0.2773
 # Bottom background colour
-# #05475c --> 0.0196, 0.2784, 0.3608
+# #263a47 --> 0.1484, 0.2266, 0.2773
 #
-Window.SetBackgroundTopColor (0.02, 0.279, 0.3608);     # Nice colour on top of the screen fading to
-Window.SetBackgroundBottomColor (0.02, 0.279, 0.3608);  # an equally nice colour on the bottom
+Window.SetBackgroundTopColor (0.1484, 0.2266, 0.2773);     # Nice colour on top of the screen fading to
+Window.SetBackgroundBottomColor (0.1484, 0.2266, 0.2773);  # an equally nice colour on the bottom
 
 bits_per_pixel = Window.GetBitsPerPixel ();
 # TODO need to handle 16 colors ?
@@ -973,7 +1038,8 @@ fun update_glow_anim () {
         global.anim_iter = 0;
     }
     #DebugMedium("iter = " + global.anim_iter);
-    glow_opacity = 0.7 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
+    #glow_opacity = 0.7 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
+    glow_opacity = 0.55 + 0.45 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
     #Debug("glow_opacity = " + glow_opacity);
     if (global.anim_start_time != global.progress_time && global.anim_status != "running") {
         global.anim_start_time = global.progress_time;
@@ -982,14 +1048,9 @@ fun update_glow_anim () {
     }
 
     if (global.anim_status == "running") {
-#        iter_img = global.logo_glow[global.anim_iter];
-#        if (iter_img == NULL) {
-#            # Generate rotated image for the glow around the logo on demand.
-#            #DebugMedium("Generating rotated image for index " + global.anim_iter);
-#            #iter_img = rotate_img(logo_glow[0], global.anim_iter, NB_ANIM_STEPS);
-#            global.logo_glow[global.anim_iter] = iter_img;
-#        }
-        global.logo_glow_sprite.SetOpacity(glow_opacity);
+        global.frill1_sprite.SetImage(global.frill1.Rotate(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi));
+        global.frill2_sprite.SetImage(global.frill2.Rotate(-global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi));
+        global.frill3_sprite.SetImage(global.frill3.Rotate(-global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi));
         global.anim_iter++;
 
         if (global.anim_iter >= NB_ANIM_STEPS) {
@@ -997,6 +1058,7 @@ fun update_glow_anim () {
         }
     }
 }
+
 
 #-----------------------------------------Refresh stuff --------------------------------
 #
@@ -1012,6 +1074,7 @@ fun refresh_callback ()
     if (global.refresh_iter == NB_REFRESHS_BETWEEN_ANIMS) {
         global.refresh_iter = 0;
         update_glow_anim();
+
     }
     #DebugBottom ("refresh_iter=" + refresh_iter + "; anim_status=" + anim_status + "; anim_start_time=" + anim_start_time + "; anim_iter=" + anim_iter);
 }
