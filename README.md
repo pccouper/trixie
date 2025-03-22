@@ -2,16 +2,16 @@ Images for debian trixie
 
 ## Key files
 
-**Wallpaper**: wallpaper/wallpaper_1920x1200.svg and wallpaper/wallpaper_small_logo_1920x1200.svg
-* Plain svg file, no unused elements, two different logo sizes
-* This composition is designed to work when *cropped* to any dimensions specified in the requirements. There are visible tangents (solvable if necessary) on the 1280x1024 if it is *scaled and then cropped*.
-* *For the additional 21x9 format:* This was added after the initial design was completed. The "small logo" variant is a step in that direction. While there are no problematic tangents, the composition does not work as well with that width. If we expect a lot of users with that format, I'll tweak the design to accommodate it. 
-* Note that lxqt will have a hard-edged appearance compared to the other DEs tested (gnome, xfce, kde). Hypothesized root cause: I believe that this is due to the fact that qt versions prior to 6.7 used basic tiny svg, which does not include the blur effect used in the final composition. 6.7+ implemented select effects that are available in svg but not tiny svg (e.g. blur), so it will have the softer edges in trixie's version of KDE but not lxqt or bookworm's KDE. I have't really dug in, though.
+See more detailed readmes in the folders.
 
+**Wallpaper**: 
+* wallpaper/wallpaper_1920x1200.svg, 
+* wallpaper/wallpaper_small_logo_1920x1200.svg, 
+* wallpaper/wallpaper_21x9.svg
 
-**Log-in screen**: login/login_1920x1200.svg is a log-in screen aligned with the original design proposal
-* The same notes under "wallpaper" above apply here
-
+**Log-in screen**: 
+* login/login_1920x1200.svg 
+* login/login_21x9.svg
 
 **Boot screen**:
 * GRUB 2: bootscreen/grub/grub.png
@@ -30,16 +30,13 @@ The "emerald3" folder is similar, except based on the assets in bootscreen/plymo
 
 Similarly, there are multiple alternatives for isolinux, given the limited palette -- two based on the same design as syslinux and one that is built from the start for 4bit.
 
-**Installer**: installer/installer_rgb16.png
+**Installer**: 
+* installer/installer_rgb16.png
 
 
 ## SVG files used for development
 
-These contain additional elments not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file.
-
-wallpaper/wallpaper_detailed_1920x1200.svg: Same visible image as wallpaper_1920x1200.svg. This is an Inkscape svg file and includes (1) viewfinders for testing the cropped composition, (2) full palettes for the image, and (3) other composition checks. These are useful for making the design but are not necessary for the final image.
-
-login/login_detailed_1920x1200.svg: Same visible image as login_1920x1200.svg. This is an Inkscape svg file and includes (1) an alternative logo with the swirl stacked above the word "debian." (2) viewfinders for testing the cropped composition, (3) full palettes for the image, and (4) other composition checks. These are useful for making the design but are not necessary for the final image.
+Several folders include Inkscape svg files (not plain svg) with the additional tag _detailed. These contain additional elements not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file.
 
 grub.svg: no additional elements relative to grub.png, but saved for editing purposes. Similar for isolinux.svg and syslinux.svg.
 
@@ -65,5 +62,6 @@ Converting bmp to rle using netpbm:
 
 First gimp -> indexed color with 15 colors
 
-```bmptoppm isolinux.bmp > boot.ppm
-pnmtorle boot.ppm -outfile=boot.rle```
+```bmptoppm isolinux.bmp > boot.ppm```
+
+```pnmtorle boot.ppm -outfile=boot.rle```
