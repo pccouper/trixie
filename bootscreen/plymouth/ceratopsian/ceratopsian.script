@@ -1,4 +1,4 @@
-#  emerald.script - boot splash using script plugin
+#  ceratopsian.script - boot splash using script plugin
 #
 #  Copyright (C) 2009 Canonical Ltd.
 #  Copyright © 2010-2021 Aurélien Couderc <coucouf@debian.org>
@@ -27,21 +27,9 @@
 
 
 #------------------------------- Constants -----------------------------------------
-#NB_ANIM_STEPS = 60;
-NB_ANIM_STEPS = 90;
-NB_REFRESHS_BETWEEN_ANIMS = 2;
+NB_ANIM_STEPS = 360;
+NB_REFRESHS_BETWEEN_ANIMS = 1;
 
-# Initial position of the center of the logo in % of background
-#LOGO_CENTER_PCT.x = 0.5; # Debian swirl image position in % of screen height & width
-#LOGO_CENTER_PCT.y = 0.55;
-#LOGO_SIZE_PCT = 0.48; # Debian + emerald image size in % of smallest screen dimension
-#LOGO_GLOW_SIZE_PCT = 0.8; # Debian swirl image size in % of smallest screen dimension
-
-# Initial position of the center of the logo in % of background
-LOGO_CENTER_PCT.x = 0.5; # Debian swirl image position in % of screen height & width
-LOGO_CENTER_PCT.y = 0.5;
-LOGO_SIZE_PCT = 0.4; # Debian + emerald image size in % of smallest screen dimension
-LOGO_GLOW_SIZE_PCT = 0.4; # Debian swirl image size in % of smallest screen dimension
 
 
 #------------------------------- Globals -------------------------------------------
@@ -123,7 +111,9 @@ fun TextYOffset() {
 
     # Put the 1st line below the logo + some spacing
     # TODO position from lower edge
-    y = logo_sprite.GetY() + logo.GetHeight();
+    #y = logo_sprite.GetY() + logo.GetHeight();
+    # Put the first line at the midpoint
+    y = 0.5*Window.GetHeight();
     #Debug("y = " + y);
 
     text_height = first_line_height * 7.5;
@@ -147,46 +137,66 @@ small_dimension = Math.Min(window_max.width, window_max.height);
 #Debug("Window.GetX():" + Window.GetX() + ", Window.GetY():" + Window.GetY());
 #Debug("Window is [" + window_max.width + ";" + window_max.height + "], ratio=" + screen_ratio);
 
-logo_size = small_dimension * LOGO_SIZE_PCT;
-logo_center.x = window_max.width * LOGO_CENTER_PCT.x;
-logo_center.y = window_max.height * LOGO_CENTER_PCT.y;
-#Debug("Logo center at [" + logo_center.x + ";" + logo_center.y + "], size=" + logo_size + "px");
-
-#logo_pos.x = logo_center.x - 0.343 * logo_size; 
-#logo_pos.y = logo_center.y - logo_size/2;
-
-logo_glow_size = small_dimension * LOGO_GLOW_SIZE_PCT;
 
 
-#---------------------------- Logo + Emerald ---------------------------------
-logo = Image("logo+emerald.png");
-logo_scale_factor = logo_size / logo.GetWidth();
-logo = logo.Scale(logo.GetWidth()  * logo_scale_factor,
-                  logo.GetHeight() * logo_scale_factor);
-logo_pos.x = logo_center.x - logo.GetWidth()/2; 
-logo_pos.y = logo_center.y - logo.GetHeight()/2;
-                  
-logo_to_top_edge = Window.GetHeight() * 0.3;
+#---------------------------- Frills ---------------------------------
+
+fun calcfmt(frill,logo_base) {
+    x0 = Window.GetWidth();
+    y0 = Window.GetHeight();
+    xlogo = logo_base.GetWidth();
+    ylogo = logo_base.GetHeight();
+    xfrill = frill.GetWidth();
+    yfrill = frill.GetHeight();
+    
+    coef = 0.6;
+    
+    logoscale = 0.1;
+    if (xlogo<logoscale*x0) {
+        dim.logo.xsize = xlogo;
+        dim.logo.ysize = ylogo;
+    }
+    else {
+        dim.logo.xsize = logoscale*x0;
+        dim.logo.ysize = (logoscale*x0/xlogo)*ylogo;
+    }
+    dim.logo.x = 0.01*x0;
+    #dim.logo.y = 0.01*y0;
+    dim.logo.y = 0.99*y0 - dim.logo.ysize;
+    
+        if (x0>=y0) {
+            dim.frill.ysize = coef*y0;
+            dim.frill.xsize = coef*y0*(xfrill/yfrill);
+            dim.frill.x = x0-coef*y0*(xfrill/yfrill);
+            dim.frill.y = y0-coef*y0;
+            }
+        else {
+            dim.frill.xsize = coef*x0;
+            dim.frill.ysize = coef*x0*(yfrill/xfrill);
+            dim.frill.x = x0 - coef*x0;
+            dim.frill.y = y0 - coef*x0*(yfrill/xfrill);
+            }
+    return dim;
+}
+
+
+logo = Image("logo.png");
+frill = Image("frill.png");
+glow = Image("glow.png");
+
+frilldim = calcfmt(frill,logo);
+
+frill = frill.Scale(frilldim.frill.xsize, frilldim.frill.ysize);
+frill_sprite = Sprite(frill);
+frill_sprite.SetPosition(frilldim.frill.x,frilldim.frill.y,-2);
+
+glow = glow.Scale(frilldim.frill.xsize, frilldim.frill.ysize);
+glow_sprite = Sprite(glow);
+glow_sprite.SetPosition(frilldim.frill.x,frilldim.frill.y,-1);
+
+logo = logo.Scale(frilldim.logo.xsize,frilldim.logo.ysize);
 logo_sprite = Sprite(logo);
-logo_sprite.SetPosition(logo_pos.x, logo_pos.y, -2);
-#logo_sprite.SetOpacity(0);
-
-logo_glow = Image("glow.png");
-logo_glow_scale_factor = logo_glow_size / logo_glow.GetWidth();
-logo_glow = logo_glow.Scale(logo_glow.GetWidth()  * logo_glow_scale_factor,
-                               logo_glow.GetHeight() * logo_glow_scale_factor);
-
-# Place glow vertically between the Debian 12 text and the emerald
-#logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2;
-#logo_glow_pos.y = logo_pos.y + logo.GetHeight()*0.1 - logo_glow.GetHeight() / 2;
-
-logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2; 
-logo_glow_pos.y = logo_center.y - logo_glow.GetHeight() / 2;
-
-
-logo_glow_sprite = Sprite();
-logo_glow_sprite.SetPosition(logo_glow_pos.x, logo_glow_pos.y, -1);
-logo_glow_sprite.SetImage(logo_glow);
+logo_sprite.SetPosition(frilldim.logo.x,frilldim.logo.y,-4);
 
 
 #------------------------------String functions-------------------------------
@@ -975,21 +985,20 @@ Plymouth.SetUpdateStatusFunction (update_status_callback);
 #
 #Plymouth.SetDisplayQuestionFunction (display_question_callback);
 
-fun rotate_img(source_img, current_step, nb_steps) {
-    angle = Math.Sin(current_step / nb_steps * Math.Pi / 2) * 2 * Math.Pi;
-    #debug_sin = Math.Sin(current_step / nb_steps * Math.Pi / 2);
-    #DebugMedium("Sin = " + debug_sin);
-    rotated_img = source_img.Rotate(angle);
-    return rotated_img;
-}
+#fun rotate_img(source_img, current_step, nb_steps) {
+#    angle = Math.Sin(current_step / nb_steps * Math.Pi / 2) * 2 * Math.Pi;
+#    #debug_sin = Math.Sin(current_step / nb_steps * Math.Pi / 2);
+#    #DebugMedium("Sin = " + debug_sin);
+#    rotated_img = source_img.Rotate(angle);
+#    return rotated_img;
+#}
 
 fun update_glow_anim () {
     if (global.anim_iter > NB_ANIM_STEPS) {
         global.anim_iter = 0;
     }
     #DebugMedium("iter = " + global.anim_iter);
-    #glow_opacity = 0.7 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
-    glow_opacity = 0.55 + 0.45 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
+    glow_opacity = 0.6 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
     #Debug("glow_opacity = " + glow_opacity);
     if (global.anim_start_time != global.progress_time && global.anim_status != "running") {
         global.anim_start_time = global.progress_time;
@@ -998,14 +1007,7 @@ fun update_glow_anim () {
     }
 
     if (global.anim_status == "running") {
-#        iter_img = global.logo_glow[global.anim_iter];
-#        if (iter_img == NULL) {
-#            # Generate rotated image for the glow around the logo on demand.
-#            #DebugMedium("Generating rotated image for index " + global.anim_iter);
-#            #iter_img = rotate_img(logo_glow[0], global.anim_iter, NB_ANIM_STEPS);
-#            global.logo_glow[global.anim_iter] = iter_img;
-#        }
-        global.logo_glow_sprite.SetOpacity(glow_opacity);
+        global.glow_sprite.SetOpacity(glow_opacity);
         global.anim_iter++;
 
         if (global.anim_iter >= NB_ANIM_STEPS) {
@@ -1013,6 +1015,7 @@ fun update_glow_anim () {
         }
     }
 }
+
 
 #-----------------------------------------Refresh stuff --------------------------------
 #
@@ -1028,6 +1031,7 @@ fun refresh_callback ()
     if (global.refresh_iter == NB_REFRESHS_BETWEEN_ANIMS) {
         global.refresh_iter = 0;
         update_glow_anim();
+
     }
     #DebugBottom ("refresh_iter=" + refresh_iter + "; anim_status=" + anim_status + "; anim_start_time=" + anim_start_time + "; anim_iter=" + anim_iter);
 }

@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Ceratopsian theme for Debian 13.0 Trixie
+Description=Ceratopsian theme by Elise Couper
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/ceratopsian
+ScriptFile=/usr/share/plymouth/themes/ceratopsian/ceratopsian.script
