@@ -10,11 +10,11 @@ The plymouth theme has five elements: a background, a frill, a glow, password sw
 
 The "ceratopsian" folder uses the existing Emerald plymouth script and folder structure, patched for the ceratopsian plymouth layout. I made minor changes to the Emerald script for alignment and sizing of the assets. The existing Emerald script and the final versions were added in separate commits if you want to see the diff.
 
-Similarly, there are multiple alternatives for isolinux, given the limited palette -- two based on the same design as syslinux (assuming 4bit indexed color is possible) and one that is built from the start for 4bit (assuming only greyscale is allowed).
+Similarly, there are multiple alternatives for the isolinux rle file, given the limited palette. Two are based on the same design as syslinux (assuming 4bit indexed color is possible, either indexed full-color or indexed greyscale). One is built from the start for 4bit (assuming indexed color is not allowed). Which option should we use? Whatever works technically. The indexed color option is preferable but it might not be technically feasible.
 
 ## svg files used for development
 
-grub.svg: no additional elements relative to grub.png, but saved for editing purposes. Similar for isolinux.svg and syslinux.svg.
+grub.svg: no additional elements relative to grub.png, but saved for editing purposes. Similar for isolinux.svg, syslinux.svg, and plymouth.svg.
 
 ## export process to ensure that plymouth elements align
 
@@ -28,3 +28,14 @@ Getting the frill and glow to line up can be difficult. The following steps will
 6. Export each layer separately back to png files with maximum compression.
 
 Other elements can be exported directly as png files from inkscape.
+
+
+## working notes
+
+Converting bmp to rle using netpbm: 
+
+First gimp -> indexed color with 15 colors
+
+```bmptoppm isolinux.bmp > boot.ppm```
+
+```pnmtorle boot.ppm -outfile=boot.rle```
