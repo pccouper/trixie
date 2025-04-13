@@ -17,9 +17,7 @@ See more detailed readmes in the folders.
 * GRUB 2: bootscreen/grub/grub.png
 * Isolinux: bootscreen/isolinux_syslinux/isolinux*.rle
 * Syslinux: bootscreen/isolinux_syslinux/syslinux_16bit.png
-* Plymouth: bootscreen/plymouth.svg
 * Plymouth with script: bootscreen/plymouth/certopsian/*
-
 
 **Installer**: 
 * installer/installer_rgb16.png
@@ -27,9 +25,7 @@ See more detailed readmes in the folders.
 
 ## SVG files used for development
 
-Several folders include Inkscape svg files (not plain svg) with the additional tag _detailed. These contain additional elements not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file.
-
-grub.svg: no additional elements relative to grub.png, but saved for editing purposes. Similar for isolinux.svg and syslinux.svg.
+The wallpaper and login folders include Inkscape svg files (not plain svg) with the additional tag _detailed. These contain additional elements not needed for the final design (e.g. palettes). It is easier to edit these and then save-as to the final file. Similarly, the working svg files used to create the designs are included for the bootscreen and installer folders, but the png and rle files are the final versions.
 
 
 ## components: files used only in developing the composition
