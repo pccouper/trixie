@@ -27,22 +27,14 @@
 
 
 #------------------------------- Constants -----------------------------------------
-#NB_ANIM_STEPS = 60;
-NB_ANIM_STEPS = 90;
+NB_ANIM_STEPS = 60;
 NB_REFRESHS_BETWEEN_ANIMS = 2;
 
 # Initial position of the center of the logo in % of background
-#LOGO_CENTER_PCT.x = 0.5; # Debian swirl image position in % of screen height & width
-#LOGO_CENTER_PCT.y = 0.55;
-#LOGO_SIZE_PCT = 0.48; # Debian + emerald image size in % of smallest screen dimension
-#LOGO_GLOW_SIZE_PCT = 0.8; # Debian swirl image size in % of smallest screen dimension
-
-# Initial position of the center of the logo in % of background
 LOGO_CENTER_PCT.x = 0.5; # Debian swirl image position in % of screen height & width
-LOGO_CENTER_PCT.y = 0.5;
-LOGO_SIZE_PCT = 0.4; # Debian + emerald image size in % of smallest screen dimension
-LOGO_GLOW_SIZE_PCT = 0.4; # Debian swirl image size in % of smallest screen dimension
-
+LOGO_CENTER_PCT.y = 0.55;
+LOGO_SIZE_PCT = 0.48; # Debian + emerald image size in % of smallest screen dimension
+LOGO_GLOW_SIZE_PCT = 0.8; # Debian swirl image size in % of smallest screen dimension
 
 #------------------------------- Globals -------------------------------------------
 # are we currently prompting for a password?
@@ -152,8 +144,8 @@ logo_center.x = window_max.width * LOGO_CENTER_PCT.x;
 logo_center.y = window_max.height * LOGO_CENTER_PCT.y;
 #Debug("Logo center at [" + logo_center.x + ";" + logo_center.y + "], size=" + logo_size + "px");
 
-#logo_pos.x = logo_center.x - 0.343 * logo_size; 
-#logo_pos.y = logo_center.y - logo_size/2;
+logo_pos.x = logo_center.x - 0.343 * logo_size; # Center the Debian 12 text, not the image
+logo_pos.y = logo_center.y - logo_size/2;
 
 logo_glow_size = small_dimension * LOGO_GLOW_SIZE_PCT;
 
@@ -163,12 +155,9 @@ logo = Image("logo+emerald.png");
 logo_scale_factor = logo_size / logo.GetWidth();
 logo = logo.Scale(logo.GetWidth()  * logo_scale_factor,
                   logo.GetHeight() * logo_scale_factor);
-logo_pos.x = logo_center.x - logo.GetWidth()/2; 
-logo_pos.y = logo_center.y - logo.GetHeight()/2;
-                  
 logo_to_top_edge = Window.GetHeight() * 0.3;
 logo_sprite = Sprite(logo);
-logo_sprite.SetPosition(logo_pos.x, logo_pos.y, -2);
+logo_sprite.SetPosition(logo_pos.x, logo_pos.y, -1);
 #logo_sprite.SetOpacity(0);
 
 logo_glow = Image("glow.png");
@@ -176,16 +165,12 @@ logo_glow_scale_factor = logo_glow_size / logo_glow.GetWidth();
 logo_glow = logo_glow.Scale(logo_glow.GetWidth()  * logo_glow_scale_factor,
                                logo_glow.GetHeight() * logo_glow_scale_factor);
 
+logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2;
 # Place glow vertically between the Debian 12 text and the emerald
-#logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2;
-#logo_glow_pos.y = logo_pos.y + logo.GetHeight()*0.1 - logo_glow.GetHeight() / 2;
-
-logo_glow_pos.x = logo_center.x - logo_glow.GetWidth() / 2; 
-logo_glow_pos.y = logo_center.y - logo_glow.GetHeight() / 2;
-
+logo_glow_pos.y = logo_pos.y + logo.GetHeight()*0.1 - logo_glow.GetHeight() / 2;
 
 logo_glow_sprite = Sprite();
-logo_glow_sprite.SetPosition(logo_glow_pos.x, logo_glow_pos.y, -1);
+logo_glow_sprite.SetPosition(logo_glow_pos.x, logo_glow_pos.y, -2);
 logo_glow_sprite.SetImage(logo_glow);
 
 
@@ -247,13 +232,13 @@ fun StringToInteger (str) {
 }
 
 #-----------------------------------------------------------------------------
-# Top background colour -> RGB/256
-# #263a47 --> 0.1484, 0.2266, 0.2773
+# Top background colour
+# #05475c --> 0.0196, 0.2784, 0.3608
 # Bottom background colour
-# #263a47 --> 0.1484, 0.2266, 0.2773
+# #05475c --> 0.0196, 0.2784, 0.3608
 #
-Window.SetBackgroundTopColor (0.1484, 0.2266, 0.2773);     # Nice colour on top of the screen fading to
-Window.SetBackgroundBottomColor (0.1484, 0.2266, 0.2773);  # an equally nice colour on the bottom
+Window.SetBackgroundTopColor (0.02, 0.279, 0.3608);     # Nice colour on top of the screen fading to
+Window.SetBackgroundBottomColor (0.02, 0.279, 0.3608);  # an equally nice colour on the bottom
 
 bits_per_pixel = Window.GetBitsPerPixel ();
 # TODO need to handle 16 colors ?
@@ -988,8 +973,7 @@ fun update_glow_anim () {
         global.anim_iter = 0;
     }
     #DebugMedium("iter = " + global.anim_iter);
-    #glow_opacity = 0.7 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
-    glow_opacity = 0.55 + 0.45 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
+    glow_opacity = 0.7 + 0.3 * Math.Cos(global.anim_iter / NB_ANIM_STEPS * 2 * Math.Pi);
     #Debug("glow_opacity = " + glow_opacity);
     if (global.anim_start_time != global.progress_time && global.anim_status != "running") {
         global.anim_start_time = global.progress_time;
